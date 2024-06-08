@@ -104,7 +104,7 @@ async function displayAlbums() {
             let folder = e.href.split("/").slice(-2)[0];
             let a = await fetch(corsProxy + `https://github.com/divyanshgoyal777/Spotify/tree/main/Spotify_Clone/song/${folder}/info.json`, {
                 headers: {
-                    'Origin': 'https://your-site.com',
+                    'Origin': 'https://songlistener.netlify.app',
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             });
