@@ -28,7 +28,7 @@ function secondsToMinutesSeconds(seconds) {
 
 async function getSongs(folder) {
     currfolder = folder;
-    let a = await fetch(`/Spotify_Clone/${folder}/`);
+    let a = await fetch(`https://songlistener.netlify.app/Spotify_Clone/${folder}/`);
     let response = await a.text();
     let div = document.createElement("div");
     div.innerHTML = response;
@@ -37,7 +37,7 @@ async function getSongs(folder) {
     for (let index = 0; index < as.length; index++) {
         const element = as[index];
         if (element.href.endsWith(".mp3")) {
-            songs.push(element.href.split(`/${folder}/`)[1]); //song
+            songs.push(element.href.split(`/${folder}/`)[1]);
         }
     }
 
@@ -76,7 +76,7 @@ const playMusic = (track, pause = false) => {
 };
 
 async function displayAlbums() {
-    let a = await fetch(`/Spotify_Clone/song/`);
+    let a = await fetch(`https://songlistener.netlify.app/Spotify_Clone/song/`);
     let response = await a.text();
     let div = document.createElement("div");
     div.innerHTML = response;
@@ -88,7 +88,7 @@ async function displayAlbums() {
 
         if (e.href.includes("/song")) {
             let folder = e.href.split("/").slice(-2)[0];
-            let a = await fetch(`/Spotify_Clone/song/${folder}/info.json`);
+            let a = await fetch(`https://songlistener.netlify.app/Spotify_Clone/song/${folder}/info.json`);
             let response = await a.json();
             cardContainer.innerHTML += `<div data-folder="${folder}" class="card">
                                                                     <div class="play">
