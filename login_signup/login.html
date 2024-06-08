@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="login.css">
+    <link rel="shortcut icon" href="/Spotify_Clone/favicon.ico" type="image/x-icon">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <title>Login</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <form id="LoginForm">
+            <h1>Login</h1>
+            <div class="input-box">
+                <input type="email" name="email" id="email" placeholder="Email-Id" required>
+                <i class='bx bx-envelope'></i>
+            </div>
+            <div class="input-box">
+                <input type="password" name="password" id="password" placeholder="Password" required>
+                <i class='far fa-eye' id="togglePassword"></i>
+            </div>
+            <div class="remember-forget">
+                <label><input type="checkbox"> Remember me</label>
+                <a class="forget" href="#">Forget Password</a>
+            </div>
+
+            <button type="submit" class="btn">Login</button>
+
+            <div class="register-new">
+                <p>Don't have any account? </p><a href="signup.html">Sign Up</a>
+            </div>
+        </form>
+    </div>
+
+    <script src="login.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+        import { getDatabase, get, ref, child } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAF-YmrIq6FvUDGaHcqM2U1AiChy7G-ots",
+            authDomain: "signupandlogin-f871b.firebaseapp.com",
+            databaseURL: "https://signupandlogin-f871b-default-rtdb.firebaseio.com",
+            projectId: "signupandlogin-f871b",
+            storageBucket: "signupandlogin-f871b.appspot.com",
+            messagingSenderId: "28399873526",
+            appId: "1:28399873526:web:033346cfb4f86fbbaa2bd7",
+            measurementId: "G-XDR139CC9R"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getDatabase();
+        const auth = getAuth(app);
+        const dbref = ref(db);
+
+        let email = document.getElementById('email');
+        let Password = document.getElementById('password');
+        let form = document.getElementById('LoginForm');
+
+        let loginUser = evt => {
+            evt.preventDefault();
+            signInWithEmailAndPassword(auth, email.value, Password.value)
+                .then((credentials) => {
+                    get(child(dbref, 'UsersAuthList/' + credentials.user.uid)).then((snapshot) => {
+                        if (snapshot.exists()) {
+                            sessionStorage.setItem("user-info", JSON.stringify({
+                                username: snapshot.val().username,
+                                password: snapshot.val().password
+                            }))
+                            sessionStorage.setItem("user-creds", JSON.stringify(credentials.user));
+                            window.location.href = '/index.html'
+                        } else {
+                            alert("User data not found");
+                        }
+                    })
+                })
+                .catch((error) => {
+                    let errorMessage = "";
+
+                    switch (error.code) {
+                        case "auth/invalid-credential":
+                            errorMessage = "Invalid credentials. Please check your email and password.";
+                            break;
+                        default:
+                            errorMessage = "An error occurred. Please try again.";
+                            console.error("Unexpected error code:", error.code, error.message);
+                            break;
+                    }
+
+                    alert(errorMessage);
+                    console.error(error.code, error.message);
+                });
+        }
+        form.addEventListener('submit', loginUser);
+    </script>
+</body>
+
+</html>

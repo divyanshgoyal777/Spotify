@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="signup.css">
+    <link rel="shortcut icon" href="/Spotify_Clone/favicon.ico" type="image/x-icon">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <title>Sign Up</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <form id="SignUpForm">
+            <h1>Sign Up</h1>
+            <div class="input-box">
+                <input type="text" name="username" id="username" placeholder="Username" required>
+                <i class='bx bxs-user'></i>
+            </div>
+            <div class="input-box">
+                <input type="email" name="email" id="email" placeholder="Email-Id" required>
+                <i class='bx bx-envelope'></i>
+            </div>
+            <div class="input-box">
+                <input type="password" name="password" id="password" placeholder="Password" required>
+                <i class="far fa-eye" id="togglePassword"></i>
+            </div>
+            <div class="input-box">
+                <input type="password" name="password" id="repassword" placeholder="Re-Enter Password" required>
+            </div>
+            <div class="input-box">
+                <input type="tel" name="number" id="number" placeholder="Mobile No." required>
+                <i class='bx bxs-phone'></i>
+            </div>
+            <button type="submit" class="btn">Create New Account</button>
+            <a href="login.html">Log In</a>
+        </form>
+    </div>
+
+    <script src="signup.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+        import { getDatabase, set, ref } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        
+      
+        const firebaseConfig = {
+          apiKey: "AIzaSyAF-YmrIq6FvUDGaHcqM2U1AiChy7G-ots",
+          authDomain: "signupandlogin-f871b.firebaseapp.com",
+          databaseURL: "https://signupandlogin-f871b-default-rtdb.firebaseio.com",
+          projectId: "signupandlogin-f871b",
+          storageBucket: "signupandlogin-f871b.appspot.com",
+          messagingSenderId: "28399873526",
+          appId: "1:28399873526:web:033346cfb4f86fbbaa2bd7",
+          measurementId: "G-XDR139CC9R"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getDatabase();
+        const auth = getAuth(app);
+
+        let Username = document.getElementById('username');
+        let email = document.getElementById('email');
+        let Password = document.getElementById('password');
+        let number = document.getElementById('number');
+        let form = document.getElementById('SignUpForm');
+
+        let RegisterUser = evt =>{
+            evt.preventDefault();
+            createUserWithEmailAndPassword(auth, email.value, Password.value)
+            .then((credentials)=>{
+                alert("Congratulations! You have successfully signed up. You can now log in with your credentials.")
+                set(ref(db, 'UsersAuthList/' + credentials.user.uid),{
+                    username: Username.value,
+                    email: email.value,
+                    password: Password.value
+                })
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            })          
+            .catch((error) => {
+            let errorMessage = "";
+
+            switch (error.code) {
+                case "auth/invalid-email":
+                    errorMessage = "Invalid email address.";
+                    break;
+                case "auth/weak-password":
+                    errorMessage = "Password should be at least 6 characters.";
+                    break;
+                case "auth/email-already-in-use":
+                    errorMessage = "This email address is already in use.";
+                    break;
+                default:
+                    errorMessage = "An error occurred. Please try again.";
+            }
+
+            alert(errorMessage);
+            // console.error(error.code, error.message);
+        });
+        } 
+        form.addEventListener('submit', RegisterUser);
+      </script>
+</body>
+
+</html>

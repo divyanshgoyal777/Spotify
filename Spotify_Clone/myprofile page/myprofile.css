@@ -1,0 +1,88 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #0e0d0d;
+    color: white;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.profile-content {
+    background-color: #1f1f1f;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80vw;
+    max-width: 400px;
+    text-align: center;
+}
+
+h1, h2, p {
+    margin: 10px 0;
+}
+
+.user-details {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+img {
+    border-radius: 50%;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+.details {
+    text-align: left;
+    width: 100%;
+}
+
+.profile-actions {
+    margin-top: 20px;
+}
+
+#profileImage{
+    cursor: pointer;
+}
+
+input {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #535353;
+    background-color: #1a1919;
+    color: white;
+    border-radius: 5px;
+    outline: none;
+}
+
+button {
+    background-color: #1DB954;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 5px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #10a51c80;
+}
+
+#saveChanges {
+    background-color: #0c8510;
+}
+
+#saveChanges:hover{
+    background-color: #00ff59;
+}
