@@ -28,7 +28,9 @@ function secondsToMinutesSeconds(seconds) {
 
 async function getSongs(folder) {
     currfolder = folder;
-    let a = await fetch(`https://github.com/divyanshgoyal777/Spotify/tree/main/Spotify_Clone/${folder}/`);
+    let corsProxy = "https://cors-anywhere.herokuapp.com/";
+    let url = `https://github.com/divyanshgoyal777/Spotify/tree/main/Spotify_Clone/${folder}/`;
+    let a = await fetch(corsProxy + url);
     let response = await a.text();
     let div = document.createElement("div");
     div.innerHTML = response;
@@ -76,7 +78,9 @@ const playMusic = (track, pause = false) => {
 };
 
 async function displayAlbums() {
-    let a = await fetch(`https://github.com/divyanshgoyal777/Spotify/tree/main/Spotify_Clone/song/`);
+    let corsProxy = "https://cors-anywhere.herokuapp.com/";
+    let url = `https://github.com/divyanshgoyal777/Spotify/tree/main/Spotify_Clone/song/`;
+    let a = await fetch(corsProxy + url);
     let response = await a.text();
     let div = document.createElement("div");
     div.innerHTML = response;
@@ -88,7 +92,7 @@ async function displayAlbums() {
 
         if (e.href.includes("/song")) {
             let folder = e.href.split("/").slice(-2)[0];
-            let a = await fetch(`https://github.com/divyanshgoyal777/Spotify/tree/main/Spotify_Clone/song/${folder}/info.json`);
+            let a = await fetch(corsProxy + `https://github.com/divyanshgoyal777/Spotify/tree/main/Spotify_Clone/song/${folder}/info.json`);
             let response = await a.json();
             cardContainer.innerHTML += `<div data-folder="${folder}" class="card">
                                                                     <div class="play">
